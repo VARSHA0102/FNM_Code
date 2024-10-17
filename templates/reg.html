@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #87CEFA; /* Feel good blue background */
+            font-family: 'Roboto', sans-serif;
+            position: relative; /* For positioning the bubbles */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+        
+        .container {
+            max-width: 600px;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            z-index: 2; /* Ensure form stays above bubbles */
+            position: relative;
+            margin-top: 20px; /* Add margin to ensure proper spacing */
+            margin-bottom: 20px;
+            overflow-y: auto; /* Allow vertical scrolling for long forms */
+        }
+        
+        html, body {
+            height: 100%;
+        }
+        
+        
+        .step-progress {
+            margin-bottom: 20px;
+        }
+        
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ddd;
+            color: #333;
+            line-height: 40px;
+            text-align: center;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+        
+        .step-circle.active {
+            background-color: #87CEEB; /* Light blue for active step */
+            color: white;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        .next-btn, .prev-btn {
+            background-color: #87CEEB; /* Light blue buttons */
+            color: white;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .next-btn:hover, .prev-btn:hover {
+            background-color: #5bb3d6;
+        }
+        
+        .btn-submit {
+            background-color: #32CD32; /* Green for submit button */
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .btn-submit:hover {
+            background-color: #28a745;
+        }
+        
+        /* Bubbles Animation */
+        @keyframes moveBubbles {
+            0% {
+                transform: translateY(100vh);
+                opacity: 0.1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+        
+        .bubble {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            bottom: -100px;
+            animation: moveBubbles 20s infinite linear;
+            z-index: 1; /* Behind the form */
+        }
+        
+        /* Adding more bubbles with different sizes and speeds */
+        .bubble:nth-child(1) {
+            width: 40px;
+            height: 40px;
+            left: 10%;
+            animation-duration: 18s;
+            animation-delay: 0s;
+        }
+        
+        .bubble:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            left: 30%;
+            animation-duration: 25s;
+            animation-delay: 3s;
+        }
+        
+        .bubble:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            left: 50%;
+            animation-duration: 22s;
+            animation-delay: 5s;
+        }
+        
+        .bubble:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            left: 70%;
+            animation-duration: 20s;
+            animation-delay: 7s;
+        }
+        
+        .bubble:nth-child(5) {
+            width: 120px;
+            height: 120px;
+            left: 90%;
+            animation-duration: 28s;
+            animation-delay: 2s;
+        }
+        
+        /* New bubbles with different sizes, delays, and animations */
+        .bubble:nth-child(6) {
+            width: 50px;
+            height: 50px;
+            left: 20%;
+            animation-duration: 18s;
+            animation-delay: 4s;
+        }
+        
+        .bubble:nth-child(7) {
+            width: 30px;
+            height: 30px;
+            left: 40%;
+            animation-duration: 26s;
+            animation-delay: 1s;
+        }
+        
+        .bubble:nth-child(8) {
+            width: 90px;
+            height: 90px;
+            left: 60%;
+            animation-duration: 22s;
+            animation-delay: 6s;
+        }
+        
+        .bubble:nth-child(9) {
+            width: 70px;
+            height: 70px;
+            left: 80%;
+            animation-duration: 20s;
+            animation-delay: 8s;
+        }
+        
+        .bubble:nth-child(10) {
+            width: 40px;
+            height: 40px;
+            left: 15%;
+            animation-duration: 30s;
+            animation-delay: 5s;
+        }
+        
+        
+        /* Updated Submit Button Styles */
+        .btn-submit {
+            background-color: #28a745; /* Green background */
+            color: white; /* White text */
+            padding: 15px 40px; /* Padding for size */
+            border-radius: 8px; /* Rounded corners */
+            font-size: 16px; /* Font size */
+            font-weight: bold; /* Bold text */
+            border: none; /* Remove border */
+            transition: background-color 0.3s, transform 0.3s; /* Add transition for hover effects */
+        }
+        
+        .btn-submit:hover {
+            background-color: #218838; /* Darker green on hover */
+            transform: scale(1.05); /* Slightly grow the button on hover */
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="text-center mb-4">
+            <h2>Registation Form</h2>
+
+        </div>
+
+        <form id="multiStepForm" action="/submit_form_detail" method="POST" enctype="multipart/form-data">
+            <!-- Step 1 -->
+            <div class="form-step active">
+                <div class="form-group">
+                    <label for="name">Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Date of Birth <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" id="dob" name="dob" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number <span class="text-danger">*</span></label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender <span class="text-danger">*</span></label><br>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="male" name="gender" class="custom-control-input" value="Male" required>
+                        <label class="custom-control-label" for="male">Male</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="female" name="gender" class="custom-control-input" value="Female" required>
+                        <label class="custom-control-label" for="female">Female</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Are you a student? <span class="text-danger">*</span></label><br>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="school" name="student" class="custom-control-input" value="School" required>
+                        <label class="custom-control-label" for="school">School</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="college" name="student" class="custom-control-input" value="College" required>
+                        <label class="custom-control-label" for="college">College</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="no" name="student" class="custom-control-input" value="No" required>
+                        <label class="custom-control-label" for="no">No</label>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-submit">Submit</button>
+            </div>
+            <div id="successMessage" class="alert alert-success mt-3" style="display: none;">Submitted successfully!</div>
+            
+                    </form>
+                </div>
+
+            
+    <!-- Floating Bubbles -->
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const steps = document.querySelectorAll('.form-step');
+        const circles = document.querySelectorAll('.step-circle');
+        let currentStep = 0;
+    
+        const form = document.getElementById('multiStepForm');
+        const additionalFields = document.getElementById('additionalFields');
+        const internshipFields = document.getElementById('internshipFields');
+        const certificateUpload = document.getElementById('certificateUpload');
+    
+        // Show the current step
+        function showStep(step) {
+            steps.forEach((el, index) => {
+                el.classList.toggle('active', index === step);
+            });
+            circles.forEach((circle, index) => {
+                circle.classList.toggle('active', index === step);
+            });
+        }
+    
+        // Validate the current step
+        function validateStep() {
+            const currentFormStep = steps[currentStep];
+            const requiredFields = currentFormStep.querySelectorAll('[required]');
+            let valid = true;
+    
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('is-invalid');
+                    valid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+    
+            // Additional validation for internship fields (if applicable)
+            if (currentStep === 1 && document.getElementById('internshipYes').checked) {
+                const internshipRequiredFields = internshipFields.querySelectorAll('[required]');
+                internshipRequiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        field.classList.add('is-invalid');
+                        valid = false;
+                    } else {
+                        field.classList.remove('is-invalid');
+                    }
+                });
+            }
+    
+            return valid;
+        }
+    
+        
+    
+        // Event delegation for next/previous buttons
+        form.addEventListener('click', function (e) {
+            if (e.target.classList.contains('next-btn')) {
+                if (validateStep()) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            } else if (e.target.classList.contains('prev-btn')) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+    
+        // Form submission
+    // Form submission
+    form.addEventListener('click', function (e) {
+        if (e.target.classList.contains('btn-submit')) {
+            if (validateStep()) {
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+    
+                // Redirect to home page after a delay
+                // Redirects after 2 seconds
+                setTimeout(function() {
+                    window.location.href = '/'; // Change to your home page URL
+                }, 2000); 
+            }
+        }
+    });
+    
+    
+        // Event delegation for dynamic form elements like radio buttons
+        form.addEventListener('change', function (e) {
+            if (e.target.name === 'student') {
+                showStudentFields();
+            } else if (e.target.id === 'internshipYes') {
+                internshipFields.style.display = 'block';
+            } else if (e.target.id === 'internshipNo') {
+                internshipFields.style.display = 'none';
+            } else if (e.target.id === 'certificateYes') {
+                certificateUpload.style.display = 'block';
+            } else if (e.target.id === 'certificateNo') {
+                certificateUpload.style.display = 'none';
+            }
+        });
+    
+        // Initialize first step
+        showStep(currentStep);
+    });
+    
+</script>
+
+</body>
+</html>

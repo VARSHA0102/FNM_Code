@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;700&display=swap">
+    <title>Assessment Hub</title>
+    <style>
+        body {
+            background-color: #f9f3e3;
+            font-family: 'Raleway', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background-color: #4a90e2;
+            font-weight: bold; /* Bold text for the navbar */
+        }
+
+        .navbar-nav .nav-link {
+            color: white !important; /* Ensuring text color is white */
+            font-weight: bold; /* Bold text for nav links */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #50e3c2 !important; /* Change color on hover */
+        }
+
+        .hero {
+            background: linear-gradient(to right, #4a90e2, #50e3c2);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            animation: slideIn 1s ease forwards;
+            opacity: 0;
+            font-weight: bold;
+        }
+
+        .hero p {
+            font-size: 1.5em;
+            animation: fadeIn 2s ease forwards;
+            opacity: 0;
+        }
+
+        .section {
+            padding: 60px 0;
+        }
+
+        .about-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px; /* Space between image and text */
+        }
+
+        .about-image {
+            width: 40%; /* Adjusted width */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 0 50% 50% 0; /* Rounded on the right side */
+            overflow: hidden; /* Clip overflow */
+        }
+
+        .about-image img {
+            width: 100%; /* Make image take the full width */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .about-text {
+            width: 60%; /* Adjust width for text */
+        }
+
+        .steps {
+            margin-top: 30px;
+            text-align: center; /* Center text */
+            background-color: #ffffff; /* New light background color */
+            padding: 20px;
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            color: black; /* Font color for steps */
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center each step */
+            margin-bottom: 15px;
+            opacity: 0; /* Start with hidden */
+            animation: fadeInUp 0.5s forwards; /* Animation effect */
+            transform: translateY(20px); /* Initial position for animation */
+        }
+
+        .step-icon {
+            margin-right: 10px;
+            color: #50e3c2; /* Icon color */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px); /* Start from below */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0); /* End at normal position */
+            }
+        }
+
+        .animation {
+            animation: fadeIn 1s ease forwards;
+            opacity: 0;
+        }
+
+        .btn-primary {
+            background-color: #50e3c2;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #4a90e2;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            .hero p {
+                font-size: 1.2em;
+            }
+
+            .about-container {
+                flex-direction: column; /* Stack on smaller screens */
+                text-align: center;
+            }
+
+            .about-image,
+            .about-text {
+                width: 100%; /* Full width on small screens */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Assessment Hub</a>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ass">Assessment Test</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+    
+                    {% if username %}
+                        <li class="nav-item"><span class="nav-link">Welcome, {{ username }}</span></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+
+    <div id="home" class="hero">
+        <div class="container">
+            <h1 class="animation">Welcome to the Assessment Hub!</h1>
+            <p class="animation">Engage, learn, and grow with our interactive assessments!</p>
+        </div>
+    </div>
+
+    <div id="about" class="section">
+        <div class="container about-container">
+            <div class="about-image">
+                <img src="{{ url_for('static', filename='images/fnm1.jpeg') }}" alt="Learning Image">
+            </div>
+            <div class="about-text">
+                <h2 class="text-center" style="font-weight: bold;">About the Task</h2>
+                <p class="text-center">Our assessments are designed to be engaging and enjoyable. Each task encourages learning through fun challenges that stimulate creativity and critical thinking. We strive to make learning accessible and exciting for everyone!</p>
+            </div>
+        </div>
+        
+        <div class="steps">
+            <h4>Steps to Upload the Assessment:</h4>
+            <div class="step" style="animation-delay: 0.1s;">
+                <i class="fas fa-user-check step-icon"></i>
+                <span>1. If you're not registered, register. If already registered, log in.</span>
+            </div>
+            <div class="step" style="animation-delay: 0.2s;">
+                <i class="fas fa-arrow-right step-icon"></i>
+                <span>2. You will be automatically redirected to the assessment page.</span>
+            </div>
+            <div class="step" style="animation-delay: 0.3s;">
+                <i class="fas fa-question-circle step-icon"></i>
+                <span>3. Understand the question.</span>
+            </div>
+            <div class="step" style="animation-delay: 0.4s;">
+                <i class="fas fa-file-archive step-icon"></i>
+                <span>4. After completing the task, upload the assignment in a ZIP file.</span>
+            </div>
+            <div class="step" style="animation-delay: 0.5s;">
+                <i class="fas fa-paper-plane step-icon"></i>
+                <span>5. Click "Submit".</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.onload = function () {
+            const heroText = document.querySelector('.hero h1');
+            const heroDesc = document.querySelector('.hero p');
+            heroText.style.opacity = 1;
+            heroDesc.style.opacity = 1;
+        };
+    </script>
+</body>
+
+</html>
